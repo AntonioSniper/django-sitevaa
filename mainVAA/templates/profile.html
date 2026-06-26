@@ -1,0 +1,436 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заполнение данных практики</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header img {
+            margin-bottom: 15px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .message {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .message-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        label {
+            width: 280px;
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input, select {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-admin {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+
+        .docs-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .docs-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .docs-section h4 {
+            color: #666;
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: normal;
+        }
+
+        .docs-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .doc-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            color: #495057;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .doc-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        hr {
+            margin: 25px 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, #e0e0e0, transparent);
+        }
+
+        .user-info {
+            background: #e8f4f8;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .user-info span {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .logout-link {
+            color: #dc3545;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            label {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            input, select {
+                width: 100%;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'icon.png' %}" height="60" width="60">
+            <h1>📋 Форма заполнения данных практики</h1>
+            <p>Заполните информацию для генерации документов</p>
+        </div>
+        
+        <div class="content">
+            <div class="user-info">
+                <div>👤 Вы вошли как: <span>{{ current_user }}</span></div>
+                <a href="{% url 'logout' %}" class="logout-link">🚪 Выйти</a>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message message-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post" id="data-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" name="familia" value="{{ data.familia|default:'' }}" placeholder="Введите фамилию">
+                </div>
+                
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" name="name" value="{{ data.name|default:'' }}" placeholder="Введите имя">
+                </div>
+                
+                <div class="form-group">
+                    <label>Отчество:</label>
+                    <input type="text" name="otchestvo" value="{{ data.otchestvo|default:'' }}" placeholder="Введите отчество">
+                </div>
+                
+                <div class="form-group">
+                    <label>Тип практики:</label>
+                    <select name="tip">
+                        <option value="Учебной" {% if data.tip == "Учебной" %}selected{% endif %}>Учебной</option>
+                        <option value="Производственной" {% if data.tip == "Производственной" %}selected{% endif %}>Производственной</option>
+                        <option value="Преддипломной" {% if data.tip == "Преддипломной" %}selected{% endif %}>Преддипломной</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Тип практики (заглавными):</label>
+                    <input type="text" name="tip_title" value="{{ data.tip_title|default:'' }}" placeholder="УЧЕБНОЙ">
+                </div>
+                
+                <div class="form-group">
+                    <label>ФИО в родительном падеже:</label>
+                    <input type="text" name="fio_genitive" value="{{ data.fio_genitive|default:'' }}" placeholder="Ведяйкина Антона Алексеевича">
+                </div>
+                
+                <div class="form-group">
+                    <label>Модуль:</label>
+                    <input type="text" name="module" value="{{ data.module|default:'' }}" placeholder="Например: ПМ.01">
+                </div>
+                
+                <div class="form-group">
+                    <label>Код модуля:</label>
+                    <input type="text" name="module_code" value="{{ data.module_code|default:'' }}" placeholder="ПМ.01">
+                </div>
+                
+                <div class="form-group">
+                    <label>Специальность:</label>
+                    <input type="text" name="specialization" value="{{ data.specialization|default:'' }}" placeholder="09.02.07 Информационные системы">
+                </div>
+                
+                <div class="form-group">
+                    <label>Курс:</label>
+                    <input type="number" name="kurs" value="{{ data.kurs|default:'' }}" min="1" max="6" placeholder="2">
+                </div>
+                
+                <div class="form-group">
+                    <label>Группа:</label>
+                    <input type="text" name="group" value="{{ data.group|default:'' }}" placeholder="ИС-25">
+                </div>
+                
+                <div class="form-group">
+                    <label>Дата начала (ДД.ММ.ГГГГ):</label>
+                    <input type="text" name="date_begin" value="{{ data.date_begin|default:'' }}" placeholder="10.06.2025">
+                </div>
+                
+                <div class="form-group">
+                    <label>Дата окончания (ДД.ММ.ГГГГ):</label>
+                    <input type="text" name="date_finish" value="{{ data.date_finish|default:'' }}" placeholder="25.06.2025">
+                </div>
+                
+                <div class="form-group">
+                    <label>Руководитель от техникума:</label>
+                    <input type="text" name="head1" value="{{ data.head1|default:'' }}" placeholder="ФИО руководителя">
+                </div>
+                
+                <div class="form-group">
+                    <label>Руководитель от организации:</label>
+                    <input type="text" name="head2" value="{{ data.head2|default:'' }}" placeholder="ФИО руководителя">
+                </div>
+                
+                <div class="form-group">
+                    <label>Руководитель практики:</label>
+                    <input type="text" name="ruc_pract" value="{{ data.ruc_pract|default:'' }}" placeholder="ФИО руководителя">
+                </div>
+                
+                <div class="form-group">
+                    <label>Год:</label>
+                    <input type="number" name="year" value="{{ data.year|default:'2026' }}" min="2020" max="2030" placeholder="2026">
+                </div>
+                
+                <div class="btn-group">
+                    <button type="submit" name="save" class="btn btn-save">💾 Сохранить данные</button>
+                    <button type="submit" name="reset" formnovalidate class="btn btn-reset">🔄 Сбросить изменения</button>
+                </div>
+            </form>
+            
+            <hr>
+            
+            <div class="docs-section">
+                <h3>📄 Скачать документы:</h3>
+                <p style="color:#666; margin-bottom:15px; font-size:14px;">При скачивании данные из формы автоматически сохранятся и сразу попадут в документ.</p>
+                <div class="btn-group">
+                    <button form="data-form" type="submit" name="download" value="title" class="btn btn-download">📑 Титульный лист</button>
+                    <button form="data-form" type="submit" name="download" value="assignment" class="btn btn-download">📋 Задание</button>
+                    <button form="data-form" type="submit" name="download" value="diary" class="btn btn-download">📓 Дневник</button>
+                </div>
+            </div>
+
+            <div class="docs-section">
+                <h3>📋 Список документов в системе</h3>
+                <h4>Доступные шаблоны для генерации:</h4>
+                <div class="docs-list">
+                    <div class="doc-item">📄 титульный лист</div>
+                    <div class="doc-item">📄 задание</div>
+                    <div class="doc-item">📄 дневник</div>
+                </div>
+            </div>
+            
+            {% if user.is_superuser %}
+            <div class="docs-section">
+                <h3>🔧 Администрирование:</h3>
+                <div class="btn-group">
+                    <a href="{% url 'admin:index' %}" class="btn btn-admin">⚙️ Перейти в Django-админку</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
