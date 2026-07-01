@@ -6,7 +6,7 @@ class Document(models.Model):
     name = models.TextField()
 
     class Meta:
-        managed = False
+
         db_table = 'document'
 
     def __str__(self):
